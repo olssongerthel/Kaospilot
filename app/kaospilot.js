@@ -19,7 +19,7 @@ exports.log = function(data) {
 /**
  * Callback for Handlebars.
  *
- * @callback handlebars
+ * @callback templateCallback
  * @param {String} compiled - The compiled HTML.
  */
 
@@ -31,7 +31,7 @@ exports.log = function(data) {
  * The file must be located in a 'templates' folder in the plugin folder and
  * use a '.hbs' file extension.
  * @param  {Object} options.data - A javascript object containing the data.
- * @param  {handlebars} callback - A callback to run.
+ * @param  {templateCallback} callback - A callback to run.
  */
 exports.handlebars = function(options, callback) {
 
@@ -88,7 +88,7 @@ exports.composer = function(options, callback) {
 /**
  * Callback for Kalabalik.
  *
- * @callback kalabalik
+ * @callback requestCallback
  * @param {obj} err - An explanation of the error that occured.
  * @param {obj} body - The body of the request response in JSON format.
  */
@@ -99,7 +99,7 @@ exports.composer = function(options, callback) {
  * @param  {String} options.requestUrl - The request URL incl. "/"
  * @param  {String} options.method - The HTTP method to use (GET, PUT) etc.
  * @param  {String} [options.body] - The body of the request (for PUT etc.)
- * @param  {kalabalik} callback - A callback to run.
+ * @param  {requestCallback} callback - A callback to run.
  */
 exports.kalabalik = function(options, callback) {
 

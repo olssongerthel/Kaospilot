@@ -15,10 +15,10 @@
 </dl>
 ### Typedefs
 <dl>
-<dt><a href="#handlebars">handlebars</a> : <code>function</code></dt>
+<dt><a href="#templateCallback">templateCallback</a> : <code>function</code></dt>
 <dd><p>Callback for Handlebars.</p>
 </dd>
-<dt><a href="#kalabalik">kalabalik</a> : <code>function</code></dt>
+<dt><a href="#requestCallback">requestCallback</a> : <code>function</code></dt>
 <dd><p>Callback for Kalabalik.</p>
 </dd>
 </dl>
@@ -44,7 +44,7 @@ Generates HTML by supplying the data along with a HBS template to use.
 | options.plugin | <code>String</code> | The machine readable name of the plugin. |
 | options.template | <code>String</code> | The name of the template file. The file must be located in a 'templates' folder in the plugin folder and use a '.hbs' file extension. |
 | options.data | <code>Object</code> | A javascript object containing the data. |
-| callback | <code>[handlebars](#handlebars)</code> | A callback to run. |
+| callback | <code>[templateCallback](#templateCallback)</code> | A callback to run. |
 
 <a name="composer"></a>
 ### composer(options)
@@ -70,10 +70,10 @@ Requests data from an instance of Kalabalik
 | options.requestUrl | <code>String</code> | The request URL incl. "/" |
 | options.method | <code>String</code> | The HTTP method to use (GET, PUT) etc. |
 | [options.body] | <code>String</code> | The body of the request (for PUT etc.) |
-| callback | <code>[kalabalik](#kalabalik)</code> | A callback to run. |
+| callback | <code>[requestCallback](#requestCallback)</code> | A callback to run. |
 
-<a name="handlebars"></a>
-### handlebars : <code>function</code>
+<a name="templateCallback"></a>
+### templateCallback : <code>function</code>
 Callback for Handlebars.
 
 **Kind**: global typedef  
@@ -82,8 +82,8 @@ Callback for Handlebars.
 | --- | --- | --- |
 | compiled | <code>String</code> | The compiled HTML. |
 
-<a name="kalabalik"></a>
-### kalabalik : <code>function</code>
+<a name="requestCallback"></a>
+### requestCallback : <code>function</code>
 Callback for Kalabalik.
 
 **Kind**: global typedef  
