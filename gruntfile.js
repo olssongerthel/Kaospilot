@@ -5,12 +5,12 @@ module.exports = function(grunt) {
   grunt.initConfig({
     jshint: {
       all: {
-        src: ['utils/*.js', 'server.js']
+        src: ['app/*.js', 'server.js']
       }
     },
     watch: {
       js: {
-        files: ['utils/*.js', 'server.js'],
+        files: ['app/*.js', 'server.js'],
         tasks: ['jshint'],
         options: {
           livereload: false,
