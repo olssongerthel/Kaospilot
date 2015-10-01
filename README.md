@@ -6,16 +6,26 @@ Kaospilot is very lightweight and only provides a couple of things:
 - The ability to set a recurring task at interval
 - A wrapper that allow you to send emails via SMTP
 - A wrapper that simplifies Kalabalik requests
-- A [Handlebars](http://handlebarsjs.com) template wrapper 
+- A [Handlebars](http://handlebarsjs.com) template wrapper
 
-# Plugin, a.k.a _Pilot_
-The pilots are small node applications. They can require any node module and act as any node application, but it requires three things:
+# Installation
+1. Grab the [latest release](https://github.com/olssongerthel/Kaospilot/releases/latest) or clone it.
+2. Unzip/Unpack and go to the folder
+3. Copy and rename config.default.js: `cp config/config.default.js config.js` and configure config.js.
+4. Install dependencies: `npm install --production`
+5. Add the plugins you want to use (in plugins folder)
+6. Run Kaospilot: `node server.js` or `npm start`
+
+Your plugin daemons should now be up and running!
+
+# Plugins
+Plugins are the daemons, or scheduled tasks, that are run by Kaospilot. They are small node applications. They can require any node module and act as any node application, but it requires three things:
 
 - A machine readable name (I.e. the name of the plugin using only letters, dashes or underscores)
 - A cron setting (i.e. `*/30 * * * * *` or similar)
 - A pilot (the task that is to be performed)
 
-Pilots reside in the `plugin` folder and must contain a `plugin.js` file.
+Plugins reside in the `plugin` folder and must contain a `plugin.js` file.
 
 **Example folder structure of a plugin**
 ```
