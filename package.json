@@ -17,6 +17,7 @@
     "grunt": "latest",
     "grunt-cli": "latest",
     "grunt-contrib-jshint": "latest",
-    "grunt-contrib-watch": "latest"
+    "grunt-contrib-watch": "latest",
+    "grunt-jsdoc-to-markdown": "^1.1.1"
   }
 }
