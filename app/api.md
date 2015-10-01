@@ -44,7 +44,7 @@ Generates HTML by supplying the data along with a HBS template to use.
 | options.plugin | <code>String</code> | The machine readable name of the plugin. |
 | options.template | <code>String</code> | The name of the template file. The file must be located in a 'templates' folder in the plugin folder and use a '.hbs' file extension. |
 | options.data | <code>Object</code> | A javascript object containing the data. |
-| callback | <code>[composer](#composer)</code> | A callback to run. |
+| callback | <code>[handlebars](#handlebars)</code> | A callback to run. |
 
 <a name="composer"></a>
 ### composer(options)

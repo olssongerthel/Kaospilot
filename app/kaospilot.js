@@ -31,7 +31,7 @@ exports.log = function(data) {
  * The file must be located in a 'templates' folder in the plugin folder and
  * use a '.hbs' file extension.
  * @param  {Object} options.data - A javascript object containing the data.
- * @param  {composer} callback - A callback to run.
+ * @param  {handlebars} callback - A callback to run.
  */
 exports.handlebars = function(options, callback) {
 
