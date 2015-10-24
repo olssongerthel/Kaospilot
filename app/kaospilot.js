@@ -76,7 +76,11 @@ exports.handlebars = function(options, callback) {
 exports.composer = function(options, callback) {
 
   options.transporterOpt = options.transporterOpt ? options.transporterOpt : conf.email.transporterOpt;
+
+  // Reroute all outgoing e-mails if rerouting is enabled. CC and BCC are disabled.
   options.mailoptions.to = conf.email.reroute ? conf.email.reroute_address : options.mailoptions.to;
+  options.mailoptions.cc = conf.email.reroute ? null : options.mailoptions.cc;
+  options.mailoptions.bcc = conf.email.reroute ? null : options.mailoptions.bcc;
 
   // Create reusable transporter object using SMTP transport
   transporter = nodemailer.createTransport(options.transporterOpt);
@@ -93,9 +97,13 @@ exports.composer = function(options, callback) {
         }
       });
     } else {
+      var recipients = [
+        options.mailoptions.to,
+        options.mailoptions.cc
+      ];
       // Log the success
       exports.log({
-        msg: 'E-mail successfully sent',
+        msg: 'E-mail "' + options.mailoptions.subject + '" successfully sent to ' + recipients.join(", "),
         meta: {
           plugin: 'Kaospilot'
         }
