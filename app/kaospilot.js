@@ -5,15 +5,24 @@ var conf = require('../config/config'),
     request = require('request'),
     winston = require('winston');
 
-// Set the default winston log type and location.
-winston.add(winston.transports.File, { filename: 'log/kaospilot.log' });
+// Default to using logfile if no other Winston transport has been selected.
+if (!conf.winstonTransport.module) {
+  winston.add(winston.transports.File, { filename: 'log/kaospilot.log' });
+} else {
+  winston.add(conf.winstonTransport.module, conf.winstonTransport.options);
+}
 
 /**
  * Generates a log entry.
  * @param  {Object} data - A Winston log object.
+ * @param  {Object} data.meta
+ * @param  {String} data.meta.plugin - The human readable name of your plugin,
+ * i.e the same as exports.label from your plugin.
  */
 exports.log = function(data) {
-  winston.log(data.type, data.msg, data.meta);
+  data.level = data.level ? data.level : 'info';
+  data.meta = data.meta ? data.meta : null;
+  winston.log(data.level, data.msg, data.meta);
 };
 
 /**
@@ -75,9 +84,22 @@ exports.composer = function(options, callback) {
   // Send e-mail with defined transport object
   transporter.sendMail(options.mailoptions, function(error, info){
     if (error) {
-      console.log(error);
+      // Log the error
+      exports.log({
+        level: 'error',
+        msg: err,
+        meta: {
+          plugin: 'Kaospilot'
+        }
+      });
     } else {
-      console.log('Email sent.');
+      // Log the success
+      exports.log({
+        msg: 'E-mail successfully sent',
+        meta: {
+          plugin: 'Kaospilot'
+        }
+      });
       if (callback !== undefined) {
         return callback();
       }

@@ -31,6 +31,8 @@ Generates a log entry.
 | Param | Type | Description |
 | --- | --- | --- |
 | data | <code>Object</code> | A Winston log object. |
+| data.meta | <code>Object</code> |  |
+| data.meta.plugin | <code>String</code> | The human readable name of your plugin, i.e the same as exports.label from your plugin. |
 
 <a name="handlebars"></a>
 ### handlebars(options, callback)
