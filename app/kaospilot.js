@@ -1,4 +1,5 @@
 var conf = require('../config/config'),
+    i18n = require('i18n'),
     handlebars = require('handlebars'),
     juice = require('juice'),
     fs = require('fs'),
@@ -11,6 +12,29 @@ if (!conf.winstonTransport.module) {
   winston.add(winston.transports.File, { filename: 'log/kaospilot.log' });
 } else {
   winston.add(conf.winstonTransport.module, conf.winstonTransport.options);
+}
+
+/**
+ * Translates a string into another language, given that a translation
+ * is available in the plugin's translation folder.
+ * @param  {String} string - The translatable string.
+ * @param  {Object} options
+ * @param  {String} [options.locale] - The language code of the string.
+ * Defaults to 'sv'
+ * @param  {String} options.plugin - The machine readable name of the plugin.
+ * @return {String} The translated string.
+ */
+exports.t = function(string, options) {
+  options = options ? options : {};
+  options.locale = options.locale ? options.locale : 'sv';
+  i18n.configure({
+    locales: conf.languages,
+    directory: 'plugins/' + options.plugin + '/translation'
+  })
+  return i18n.__({
+    phrase: string,
+    locale: options.locale
+  });
 }
 
 /**

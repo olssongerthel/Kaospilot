@@ -1,5 +1,9 @@
 ### Functions
 <dl>
+<dt><a href="#t">t(string, options)</a> ⇒ <code>String</code></dt>
+<dd><p>Translates a string into another language, given that a translation
+is available in the plugin&#39;s translation folder.</p>
+</dd>
 <dt><a href="#log">log(data)</a></dt>
 <dd><p>Generates a log entry.</p>
 </dd>
@@ -22,6 +26,21 @@
 <dd><p>Callback for Kalabalik.</p>
 </dd>
 </dl>
+<a name="t"></a>
+### t(string, options) ⇒ <code>String</code>
+Translates a string into another language, given that a translation
+is available in the plugin's translation folder.
+
+**Kind**: global function  
+**Returns**: <code>String</code> - The translated string.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| string | <code>String</code> | The translatable string. |
+| options | <code>Object</code> |  |
+| [options.locale] | <code>String</code> | The language code of the string. Defaults to 'sv' |
+| options.plugin | <code>String</code> | The machine readable name of the plugin. |
+
 <a name="log"></a>
 ### log(data)
 Generates a log entry.

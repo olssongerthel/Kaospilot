@@ -33,6 +33,19 @@ var winstonTransport = {
   // options: {}
 }
 
+/**
+ * Add the languages you will use with Kaospilot. This setting is required for
+ * plugins to be able to use localization (kaospilot.t) properly.
+ * @type {Array}  languages
+ * @type {String} languages[] - A valid language code (i.e. 'sv' or 'dk').
+ */
+var languages = [
+  // 'sv',
+  // 'en',
+  // 'dk'
+];
+
 exports.kalabalik = kalabalik;
 exports.email = email;
 exports.winstonTransport = winstonTransport;
+exports.languages = languages;
