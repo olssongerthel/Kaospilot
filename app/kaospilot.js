@@ -168,7 +168,7 @@ exports.composer = function(options, callback) {
  */
 exports.kalabalik = function(options, callback) {
 
-  console.log('Fetching data from Kalabalik');
+  console.log('Fetching data from Kalabalik at ' + options.requestUrl);
 
   // Default to port 80
   conf.kalabalik.port = conf.kalabalik.port ? conf.kalabalik.port : 80;
