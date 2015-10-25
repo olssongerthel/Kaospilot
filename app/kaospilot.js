@@ -6,7 +6,7 @@ var conf = require('../config/config'),
     request = require('request'),
     winston = require('winston');
 
-// Default to using logfile if no other Winston transport has been selected.
+// Default to using file logging if no other Winston transport has been selected.
 if (!conf.winstonTransport.module) {
   winston.add(winston.transports.File, { filename: 'log/kaospilot.log' });
 } else {
