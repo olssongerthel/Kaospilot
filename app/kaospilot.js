@@ -22,13 +22,14 @@ if (!conf.winstonTransport.module) {
 
 /**
  * Translates a string into another language, given that a translation
- * is available in the plugin's translation folder.
+ * is available in the locale folder.
  * @param  {String} string - The translatable string.
- * @param  {String} [locale=sv] - The language code of the string (lowercase).
+ * @param  {Int}    [locale=0] - The FDT code for the language. Is matched
+ * against the 'languages' list in the configuration file.
  * @return {String} The translated string.
  */
 exports.t = function(string, locale) {
-  langCode = locale ? conf.languages[locale] : 'sv';
+  langCode = locale ? conf.languages[locale] : conf.languages[0];
   return i18n.__({
     phrase: string,
     locale: langCode
