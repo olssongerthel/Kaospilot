@@ -1,8 +1,8 @@
 ### Functions
 <dl>
-<dt><a href="#t">t(string, options)</a> ⇒ <code>String</code></dt>
+<dt><a href="#t">t(string, [locale])</a> ⇒ <code>String</code></dt>
 <dd><p>Translates a string into another language, given that a translation
-is available in the plugin&#39;s translation folder.</p>
+is available in the locale folder.</p>
 </dd>
 <dt><a href="#log">log(data)</a></dt>
 <dd><p>Generates a log entry.</p>
@@ -27,19 +27,17 @@ is available in the plugin&#39;s translation folder.</p>
 </dd>
 </dl>
 <a name="t"></a>
-### t(string, options) ⇒ <code>String</code>
+### t(string, [locale]) ⇒ <code>String</code>
 Translates a string into another language, given that a translation
-is available in the plugin's translation folder.
+is available in the locale folder.
 
 **Kind**: global function  
 **Returns**: <code>String</code> - The translated string.  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| string | <code>String</code> | The translatable string. |
-| options | <code>Object</code> |  |
-| [options.locale] | <code>String</code> | The language code of the string. Defaults to 'sv' |
-| options.plugin | <code>String</code> | The machine readable name of the plugin. |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| string | <code>String</code> |  | The translatable string. |
+| [locale] | <code>Int</code> | <code>0</code> | The FDT code for the language. Is matched against the 'languages' list in the configuration file. |
 
 <a name="log"></a>
 ### log(data)
