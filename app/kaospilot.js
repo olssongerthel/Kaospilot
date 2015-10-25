@@ -1,5 +1,6 @@
 var conf = require('../config/config'),
     handlebars = require('handlebars'),
+    juice = require('juice'),
     fs = require('fs'),
     nodemailer = require('nodemailer'),
     request = require('request'),
@@ -39,18 +40,41 @@ exports.log = function(data) {
  * @param  {String} options.template - The name of the template file.
  * The file must be located in a 'templates' folder in the plugin folder and
  * use a '.hbs' file extension.
+ * @param  {String} [options.css] - The name of the css file incl. extension
+ * to apply inline. Must be located in a 'css' folder in the plugin folder.
  * @param  {Object} options.data - A javascript object containing the data.
  * @param  {templateCallback} callback - A callback to run.
  */
 exports.handlebars = function(options, callback) {
 
-  var location = 'plugins/' + options.plugin + '/templates/' + options.template + '.hbs';
+  var templateLocation = 'plugins/' + options.plugin + '/templates/' + options.template + '.hbs';
+  var css = '';
+
+  // Opens a plugin CSS file and returns its content as a string in a callback.
+  var fetchCss = function(callback) {
+    var cssLocation = 'plugins/' + options.plugin + '/css/' + options.css;
+    fs.readFile(cssLocation, function(err, fileContent){
+      if (!err) {
+        css = fileContent.toString();
+        callback(css);
+      } else {
+        console.log('Something went wrong when attempting to open the css file: ' + err);
+        return;
+      }
+    });
+  }
 
   // Read the template file and use a callback to render
-  fs.readFile(location, function(err, fileContent){
+  fs.readFile(templateLocation, function(err, fileContent){
     if (!err) {
       var source = fileContent.toString();
-      renderToString(source, options.data);
+      if (options.css) {
+        fetchCss(function() {
+          renderToString(source, options.data);
+        });
+      } else {
+        renderToString(source, options.data);
+      }
     } else {
       console.log('Something went wrong when attempting to open the template file: ' + err);
       return;
@@ -61,7 +85,18 @@ exports.handlebars = function(options, callback) {
   function renderToString(source, data) {
     var template = handlebars.compile(source);
     var compiled = template(data);
-    return callback(compiled);
+    if (options.css) {
+      juice.juiceResources(compiled, {
+        extraCss: css,
+        applyStyleTags: true
+      }, function(err, html){
+        if (!err) {
+          callback(html);
+        }
+      });
+    } else {
+      return callback(compiled);
+    }
   }
 };
 

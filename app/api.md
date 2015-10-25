@@ -45,6 +45,7 @@ Generates HTML by supplying the data along with a HBS template to use.
 | options | <code>Object</code> |  |
 | options.plugin | <code>String</code> | The machine readable name of the plugin. |
 | options.template | <code>String</code> | The name of the template file. The file must be located in a 'templates' folder in the plugin folder and use a '.hbs' file extension. |
+| [options.css] | <code>String</code> | The name of the css file incl. extension to apply inline. Must be located in a 'css' folder in the plugin folder. |
 | options.data | <code>Object</code> | A javascript object containing the data. |
 | callback | <code>[templateCallback](#templateCallback)</code> | A callback to run. |
 
