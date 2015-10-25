@@ -51,4 +51,12 @@ exports.pilot = function() {
 
 ## API
 
-See [API documentation](app/api.md) for complete documentation of the Kaospilot API. 
+See [API documentation](app/api.md) for complete documentation of the Kaospilot API.
+
+## Internationalization
+
+Kaospilot supports translation of strings in plugins, both as a stand-alone helper function (see kaospilot.t) and as a Handlebars helper. Translatable strings must be added in english. All translations are global, meaning that a translated string cannot differ from plugin to plugin. Translations are kept, and not versioned, in the "locale" folder.
+
+Handlebars template implementation looks like this:
+
+`{{l10n "Order"}}`
