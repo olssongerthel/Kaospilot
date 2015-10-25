@@ -2,4 +2,4 @@ node_modules
 plugins
 config/config.js
 *.log
-locale/*
+locale/*.json
