@@ -113,7 +113,7 @@ exports.handlebars = function(options, callback) {
     // this in the future might be to rewrite how plugins work
     // and add all Kaospilot helpers as separate instances on the
     // plugin object.
-    handlebars.registerHelper('l10n', function(string) {
+    handlebars.registerHelper('t', function(string) {
       return exports.t(string, options.lang);
     });
 

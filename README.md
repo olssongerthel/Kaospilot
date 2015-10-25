@@ -59,4 +59,4 @@ Kaospilot supports translation of strings in plugins, both as a stand-alone help
 
 Handlebars template implementation looks like this:
 
-`{{l10n "Order"}}`
+`{{t "Order"}}`
