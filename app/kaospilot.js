@@ -7,6 +7,12 @@ var conf = require('../config/config'),
     request = require('request'),
     winston = require('winston');
 
+// Configure i18n
+i18n.configure({
+  locales: conf.languages,
+  directory: 'locale'
+})
+
 // Default to using file logging if no other Winston transport has been selected.
 if (!conf.winstonTransport.module) {
   winston.add(winston.transports.File, { filename: 'log/kaospilot.log' });
@@ -18,22 +24,14 @@ if (!conf.winstonTransport.module) {
  * Translates a string into another language, given that a translation
  * is available in the plugin's translation folder.
  * @param  {String} string - The translatable string.
- * @param  {Object} options
- * @param  {String} [options.locale] - The language code of the string.
- * Defaults to 'sv'
- * @param  {String} options.plugin - The machine readable name of the plugin.
+ * @param  {String} [locale=sv] - The language code of the string (lowercase).
  * @return {String} The translated string.
  */
-exports.t = function(string, options) {
-  options = options ? options : {};
-  options.locale = options.locale ? options.locale : 'sv';
-  i18n.configure({
-    locales: conf.languages,
-    directory: 'plugins/' + options.plugin + '/translation'
-  })
+exports.t = function(string, locale) {
+  langCode = locale ? conf.languages[locale] : 'sv';
   return i18n.__({
     phrase: string,
-    locale: options.locale
+    locale: langCode
   });
 }
 
@@ -107,6 +105,18 @@ exports.handlebars = function(options, callback) {
 
   // Render the output by combining the data with the template.
   function renderToString(source, data) {
+    // This is a highly ineffective and ugly hack to add i18n
+    // support to Handlebars. We're registering this helper
+    // each time a new template is used, because the Handlebars
+    // function is global which means that we have to pass
+    // language and plugin values around. The best way to handle
+    // this in the future might be to rewrite how plugins work
+    // and add all Kaospilot helpers as separate instances on the
+    // plugin object.
+    handlebars.registerHelper('l10n', function(string) {
+      return exports.t(string, options.lang);
+    });
+
     var template = handlebars.compile(source);
     var compiled = template(data);
     if (options.css) {

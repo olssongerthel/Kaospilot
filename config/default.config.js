@@ -35,14 +35,20 @@ var winstonTransport = {
 
 /**
  * Add the languages you will use with Kaospilot. This setting is required for
- * plugins to be able to use localization (kaospilot.t) properly.
+ * plugins to be able to use localization (kaospilot.t) properly. The languages
+ * have to match the order that is used in FDT Avance. 0 is always swedish.
+ * If unsure, leave as is.
  * @type {Array}  languages
  * @type {String} languages[] - A valid language code (i.e. 'sv' or 'dk').
  */
 var languages = [
-  // 'sv',
-  // 'en',
-  // 'dk'
+  'sv',
+  'en',
+  'de',
+  'fr',
+  'fi',
+  'no',
+  'da'
 ];
 
 exports.kalabalik = kalabalik;
