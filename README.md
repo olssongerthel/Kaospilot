@@ -30,6 +30,8 @@ Plugins reside in the `plugin` folder and must contain a `plugin.js` file.
 **Example folder structure of a plugin**
 ```
 |- send_new_order_email
+  |- css
+    |- email.css
   |- node_modules
   |- package.json
   |- plugin.js
