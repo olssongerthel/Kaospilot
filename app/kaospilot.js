@@ -18,7 +18,7 @@ handlebars.registerHelper('t', function(string, locale) {
 i18n.configure({
   locales: conf.languages,
   directory: 'locale'
-})
+});
 
 // Default to using file logging if no other Winston transport has been selected.
 if (!conf.winstonTransport.module) {
@@ -40,7 +40,7 @@ exports.t = function(string, locale) {
     phrase: string,
     locale: locale
   });
-}
+};
 
 /**
  * Generates a log entry.
@@ -91,7 +91,7 @@ exports.handlebars = function(options, callback) {
         return;
       }
     });
-  }
+  };
 
   // Read the template file and use a callback to render
   fs.readFile(templateLocation, function(err, fileContent){
@@ -155,9 +155,10 @@ exports.composer = function(options, callback) {
       // Log the error
       exports.log({
         level: 'error',
-        msg: err,
+        msg: error,
         meta: {
-          plugin: 'Kaospilot'
+          subject: options.mailoptions.subject,
+          to: options.mailoptions.to
         }
       });
     } else {
@@ -167,10 +168,7 @@ exports.composer = function(options, callback) {
       ];
       // Log the success
       exports.log({
-        msg: 'E-mail "' + options.mailoptions.subject + '" successfully sent to ' + recipients.join(", "),
-        meta: {
-          plugin: 'Kaospilot'
-        }
+        msg: 'E-mail "' + options.mailoptions.subject + '" successfully sent to ' + recipients.join(", ")
       });
       if (callback !== undefined) {
         return callback();
@@ -229,6 +227,6 @@ exports.kalabalik = function(options, callback) {
 
     err = (error || response.statusCode !== 200) ? err : null;
 
-    return callback(err, body);
+    callback(err, body);
   });
 };
