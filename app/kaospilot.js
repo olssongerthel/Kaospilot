@@ -7,6 +7,13 @@ var conf = require('../config/config'),
     request = require('request'),
     winston = require('winston');
 
+// Register custom handlebars i18n helper.
+handlebars.registerHelper('t', function(string, locale) {
+  // Default locale to Swedish if undefined or Swedish.
+  locale = locale || 0;
+  return exports.t(string, conf.languages[locale]);
+});
+
 // Configure i18n
 i18n.configure({
   locales: conf.languages,
@@ -29,10 +36,9 @@ if (!conf.winstonTransport.module) {
  * @return {String} The translated string.
  */
 exports.t = function(string, locale) {
-  langCode = locale ? conf.languages[locale] : conf.languages[0];
   return i18n.__({
     phrase: string,
-    locale: langCode
+    locale: locale
   });
 }
 
@@ -106,18 +112,6 @@ exports.handlebars = function(options, callback) {
 
   // Render the output by combining the data with the template.
   function renderToString(source, data) {
-    // This is a highly ineffective and ugly hack to add i18n
-    // support to Handlebars. We're registering this helper
-    // each time a new template is used, because the Handlebars
-    // function is global which means that we have to pass
-    // language and plugin values around. The best way to handle
-    // this in the future might be to rewrite how plugins work
-    // and add all Kaospilot helpers as separate instances on the
-    // plugin object.
-    handlebars.registerHelper('t', function(string) {
-      return exports.t(string, options.lang);
-    });
-
     var template = handlebars.compile(source);
     var compiled = template(data);
     if (options.css) {
