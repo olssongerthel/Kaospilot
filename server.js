@@ -7,7 +7,6 @@ var fs = require('fs'),
 var plugins = [];
 
 kaospilot.log({
-  level: 'ok',
   msg: 'Let the Kaos begin!'
 });
 
@@ -21,12 +20,13 @@ loader.load('./plugins/**/plugin.js', function (plugin, filename) {
     });
     return;
   }
-  console.log('Loaded plugin: ' + plugin.label);
+  kaospilot.log({
+    msg: 'Loaded plugin: ' + plugin.label
+  });
   plugins.push(plugin);
 }).then(function() {
   if (plugins.length) {
     kaospilot.log({
-      level: 'info',
       msg: 'All plugins loaded.'
     });
     // Start the cron daemon
