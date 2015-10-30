@@ -3,7 +3,7 @@ var fs = require('fs'),
     CronJob = require('cron').CronJob;
 
 // Create a namespace that will hold the plugins.
-var plugins = {};
+var plugins = [];
 
 console.log('Let the Kaos begin!');
 
@@ -15,16 +15,20 @@ loader.load('./plugins/**/plugin.js', function (plugin, filename) {
     return;
   }
   console.log('Loaded plugin: ' + plugin.label);
-  plugins[plugin.machine] = plugin;
+  plugins.push(plugin);
 }).then(function() {
-  console.log('All plugins loaded.');
-  // Start the cron daemon
-  initialize();
+  if (plugins.length) {
+    console.log('All plugins loaded.');
+    // Start the cron daemon
+    initialize();
+  } else {
+    console.log('No plugins found. Aborting...');
+  }
 });
 
 // Creates a new cron task for each plugin found.
 var initialize = function() {
-  for (var plugin in plugins) {
-    new CronJob(plugins[plugin].cron, plugins[plugin].pilot, null, true);
+  for (var i = 0; i < plugins.length; i++) {
+    new CronJob(plugins[i].cron, plugins[i].pilot, null, true);
   }
 };
