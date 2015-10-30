@@ -1,28 +1,41 @@
 var fs = require('fs'),
     loader = require('node-glob-loader'),
+    kaospilot = require('./app/kaospilot'),
     CronJob = require('cron').CronJob;
 
 // Create a namespace that will hold the plugins.
 var plugins = [];
 
-console.log('Let the Kaos begin!');
+kaospilot.log({
+  level: 'ok',
+  msg: 'Let the Kaos begin!'
+});
 
 // Load all available plugins.
 loader.load('./plugins/**/plugin.js', function (plugin, filename) {
   // Bail if it appears to be a broken or incomplete plugin.
   if (!plugin.machine || !plugin.cron || !plugin.pilot) {
-    console.log('Plugin failed to load.');
+    kaospilot.log({
+      level: 'error',
+      msg: 'Plugin failed to load'
+    });
     return;
   }
   console.log('Loaded plugin: ' + plugin.label);
   plugins.push(plugin);
 }).then(function() {
   if (plugins.length) {
-    console.log('All plugins loaded.');
+    kaospilot.log({
+      level: 'info',
+      msg: 'All plugins loaded.'
+    });
     // Start the cron daemon
     initialize();
   } else {
-    console.log('No plugins found. Aborting...');
+    kaospilot.log({
+      level: 'error',
+      msg: 'No plugins found. Aborting...'
+    });
   }
 });
 
