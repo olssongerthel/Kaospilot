@@ -1,5 +1,6 @@
 node_modules
-plugins
+plugins/*
+!plugins/README.md
 config/config.js
 *.log
 locale/*.json
