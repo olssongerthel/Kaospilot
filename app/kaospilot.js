@@ -223,9 +223,10 @@ exports.composer = function(options, callback) {
  * Requests data from an instance of Kalabalik
  * @param  {Object} options
  * @param  {String} options.requestUrl - The request URL incl. "/"
- * @param  {String} options.method - The HTTP method to use (GET, PUT) etc.
- * @param  {String} [options.body] - The body of the request (for PUT etc.)
- * @param  {requestCallback} callback - A callback to run.
+ * @param  {String} options.method     - The HTTP method to use (GET, PUT) etc.
+ * @param  {String} [options.body]     - The body of the request (for PUT etc.)
+ * @param  {Object} options.qs         - A object containing query string values.
+ * @param  {requestCallback} callback  - A callback to run.
  */
 exports.kalabalik = function(options, callback) {
 
@@ -239,6 +240,7 @@ exports.kalabalik = function(options, callback) {
     method: options.method,
     uri: conf.kalabalik.url + ':' + conf.kalabalik.port + options.requestUrl,
     body: options.body,
+    qs: options.qs || {},
     json: true,
     auth: {
       user: conf.kalabalik.username,
