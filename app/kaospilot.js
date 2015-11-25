@@ -11,7 +11,7 @@ var conf = require('../config/config'),
 handlebars.registerHelper('t', function(string, locale) {
   // Default locale to Swedish if undefined or Swedish.
   locale = locale || 0;
-  return exports.t(string, conf.languages[locale]);
+  return exports.t(string, locale);
 });
 
 // Configure i18n
@@ -38,7 +38,7 @@ if (!conf.winstonTransport.module) {
 exports.t = function(string, locale) {
   return i18n.__({
     phrase: string,
-    locale: locale
+    locale: conf.languages[locale]
   });
 };
 
