@@ -145,7 +145,7 @@ exports.handlebars = function(options, callback) {
  * options object. See Nodemailer module docs for more info.
  * @param  {String} options.mailoptions - A valid Nodemailer mailoptions
  * object. See Nodemailer module docs for more info.
- * @param  {Boolean} [debug] - If true, saves the composed e-mail as a html file
+ * @param  {Boolean} [options.debug] - If true, saves the composed e-mail as a html file
  * to the debug folder instead of sending it as an e-mail. Respects the value of
  * the global debug setting used in the configuration file.
  * @param  {Function} callback - A callback to run after the e-mail is sent.

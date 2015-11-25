@@ -10,7 +10,7 @@ is available in the locale folder.</p>
 <dt><a href="#handlebars">handlebars(options, callback)</a></dt>
 <dd><p>Generates HTML by supplying the data along with a HBS template to use.</p>
 </dd>
-<dt><a href="#composer">composer(options, [debug], callback)</a></dt>
+<dt><a href="#composer">composer(options, callback)</a></dt>
 <dd><p>Sends an e-mail via SMTP.</p>
 </dd>
 <dt><a href="#kalabalik">kalabalik(options, callback)</a></dt>
@@ -71,7 +71,7 @@ Generates HTML by supplying the data along with a HBS template to use.
 | callback | <code>[templateCallback](#templateCallback)</code> | A callback to run. |
 
 <a name="composer"></a>
-### composer(options, [debug], callback)
+### composer(options, callback)
 Sends an e-mail via SMTP.
 
 **Kind**: global function  
@@ -81,7 +81,7 @@ Sends an e-mail via SMTP.
 | options | <code>Object</code> |  |
 | [options.transporterOpt] | <code>String</code> | A valid Nodemailer transporter options object. See Nodemailer module docs for more info. |
 | options.mailoptions | <code>String</code> | A valid Nodemailer mailoptions object. See Nodemailer module docs for more info. |
-| [debug] | <code>Boolean</code> | If true, saves the composed e-mail as a html file to the debug folder instead of sending it as an e-mail. Respects the value of the global debug setting used in the configuration file. |
+| [options.debug] | <code>Boolean</code> | If true, saves the composed e-mail as a html file to the debug folder instead of sending it as an e-mail. Respects the value of the global debug setting used in the configuration file. |
 | callback | <code>function</code> | A callback to run after the e-mail is sent. |
 
 <a name="kalabalik"></a>
