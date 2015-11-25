@@ -38,7 +38,9 @@ if (!conf.winstonTransport.module) {
 
 /**
  * Translates a string into another language, given that a translation
- * is available in the locale folder.
+ * is available in the 'locale' folder. Translations are stored as JSON files.
+ * See https://github.com/mashpie/i18n-node for more information about the format.
+ * The folder will be automatically created if it doesn't exist.
  * @param  {String} string - The translatable string.
  * @param  {Int}    [locale=0] - The FDT code for the language. Is matched
  * against the 'languages' list in the configuration file.

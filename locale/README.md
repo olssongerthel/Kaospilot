@@ -1,1 +1,0 @@
-Translation files in JSON are automatically created and kept here. See https://github.com/mashpie/i18n-node for more information about the format.

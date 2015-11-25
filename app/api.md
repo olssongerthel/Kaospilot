@@ -2,7 +2,9 @@
 <dl>
 <dt><a href="#t">t(string, [locale])</a> ⇒ <code>String</code></dt>
 <dd><p>Translates a string into another language, given that a translation
-is available in the locale folder.</p>
+is available in the &#39;locale&#39; folder. Translations are stored as JSON files.
+See <a href="https://github.com/mashpie/i18n-node">https://github.com/mashpie/i18n-node</a> for more information about the format.
+The folder will be automatically created if it doesn&#39;t exist.</p>
 </dd>
 <dt><a href="#log">log(data)</a></dt>
 <dd><p>Generates a log entry.</p>
@@ -33,7 +35,9 @@ e-mails in order to prevent sending them.</p>
 <a name="t"></a>
 ### t(string, [locale]) ⇒ <code>String</code>
 Translates a string into another language, given that a translation
-is available in the locale folder.
+is available in the 'locale' folder. Translations are stored as JSON files.
+See https://github.com/mashpie/i18n-node for more information about the format.
+The folder will be automatically created if it doesn't exist.
 
 **Kind**: global function  
 **Returns**: <code>String</code> - The translated string.  
