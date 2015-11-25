@@ -1,6 +1,6 @@
 ### Functions
 <dl>
-<dt><a href="#t">t(string, [locale])</a> ⇒ <code>String</code></dt>
+<dt><a href="#t">t(string, [locale], [plural], [count])</a> ⇒ <code>String</code></dt>
 <dd><p>Translates a string into another language, given that a translation
 is available in the &#39;locale&#39; folder. Translations are stored as JSON files.
 See <a href="https://github.com/mashpie/i18n-node">https://github.com/mashpie/i18n-node</a> for more information about the format.
@@ -33,7 +33,7 @@ e-mails in order to prevent sending them.</p>
 </dd>
 </dl>
 <a name="t"></a>
-### t(string, [locale]) ⇒ <code>String</code>
+### t(string, [locale], [plural], [count]) ⇒ <code>String</code>
 Translates a string into another language, given that a translation
 is available in the 'locale' folder. Translations are stored as JSON files.
 See https://github.com/mashpie/i18n-node for more information about the format.
@@ -44,8 +44,10 @@ The folder will be automatically created if it doesn't exist.
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| string | <code>String</code> |  | The translatable string. |
+| string | <code>String</code> |  | The translatable string. If plural is true, should be the singular value, i.e. '%s cats' |
 | [locale] | <code>Int</code> | <code>0</code> | The FDT code for the language. Is matched against the 'languages' list in the configuration file. |
+| [plural] | <code>Boolean</code> | <code>false</code> | Set to true if the string is a single phrase with plural support. |
+| [count] | <code>Int</code> |  | The number to use to determine whether it's singular or plural. Only used in combination with pluralized strings. |
 
 <a name="log"></a>
 ### log(data)

@@ -8,10 +8,16 @@ var conf = require('../config/config'),
     winston = require('winston');
 
 // Register custom handlebars i18n helper.
-handlebars.registerHelper('t', function(string, locale) {
+handlebars.registerHelper('t', function(string, locale, plural, count) {
   // Default locale to Swedish if undefined or Swedish.
   locale = locale || 0;
-  return exports.t(string, locale);
+  if (!plural || typeof plural != 'boolean') {
+    plural = false;
+  }
+  if (!count || typeof count != 'number') {
+    plural = false;
+  }
+  return exports.t(string, locale, plural, count);
 });
 
 /**
@@ -41,16 +47,29 @@ if (!conf.winstonTransport.module) {
  * is available in the 'locale' folder. Translations are stored as JSON files.
  * See https://github.com/mashpie/i18n-node for more information about the format.
  * The folder will be automatically created if it doesn't exist.
- * @param  {String} string - The translatable string.
+ * @param  {String} string - The translatable string. If plural is true, should be
+ * the singular value, i.e. '%s cats'
  * @param  {Int}    [locale=0] - The FDT code for the language. Is matched
  * against the 'languages' list in the configuration file.
+ * @param  {Boolean} [plural=false] - Set to true if the string is a single phrase with
+ * plural support.
+ * @param  {Int}     [count] - The number to use to determine whether it's singular or
+ * plural. Only used in combination with pluralized strings.
  * @return {String} The translated string.
  */
-exports.t = function(string, locale) {
-  return i18n.__({
-    phrase: string,
-    locale: conf.languages[locale]
-  });
+exports.t = function(string, locale, plural, count) {
+  if (plural) {
+    return i18n.__n({
+      singular: string,
+      plural: string,
+      locale: conf.languages[locale]
+    }, count);
+  } else {
+    return i18n.__({
+      phrase: string,
+      locale: conf.languages[locale]
+    });
+  }
 };
 
 /**
