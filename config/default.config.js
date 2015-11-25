@@ -51,7 +51,15 @@ var languages = [
   'da'
 ];
 
+/**
+ * Can be used to debug plugins during development. The variable must however
+ * be used by the plugins themselves in order to function.
+ * @type {Boolean}
+ */
+var debug = false;
+
 exports.kalabalik = kalabalik;
 exports.email = email;
 exports.winstonTransport = winstonTransport;
 exports.languages = languages;
+exports.debug = debug;

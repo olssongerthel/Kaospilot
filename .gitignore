@@ -4,3 +4,4 @@ plugins/*
 config/config.js
 *.log
 locale/*.json
+debug/*

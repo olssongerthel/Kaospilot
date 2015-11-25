@@ -143,45 +143,68 @@ exports.handlebars = function(options, callback) {
  * options object. See Nodemailer module docs for more info.
  * @param  {String} options.mailoptions - A valid Nodemailer mailoptions
  * object. See Nodemailer module docs for more info.
+ * @param  {Boolean} [debug] - If true, saves the composed e-mail as a html file
+ * to the debug folder instead of sending it as an e-mail. Respects the value of
+ * the global debug setting used in the configuration file.
+ * @param  {Function} callback - A callback to run after the e-mail is sent.
  */
 exports.composer = function(options, callback) {
 
-  options.transporterOpt = options.transporterOpt ? options.transporterOpt : conf.email.transporterOpt;
-
-  // Reroute all outgoing e-mails if rerouting is enabled. CC and BCC are disabled.
-  options.mailoptions.to = conf.email.reroute ? conf.email.reroute_address : options.mailoptions.to;
-  options.mailoptions.cc = conf.email.reroute ? null : options.mailoptions.cc;
-  options.mailoptions.bcc = conf.email.reroute ? null : options.mailoptions.bcc;
-
-  // Create reusable transporter object using SMTP transport
-  transporter = nodemailer.createTransport(options.transporterOpt);
-
-  // Send e-mail with defined transport object
-  transporter.sendMail(options.mailoptions, function(error, info){
-    if (error) {
-      // Log the error
-      exports.log({
-        level: 'error',
-        msg: error,
-        meta: {
-          subject: options.mailoptions.subject,
-          to: options.mailoptions.to
-        }
-      });
-    } else {
-      var recipients = [
-        options.mailoptions.to,
-        options.mailoptions.cc
-      ];
-      // Log the success
-      exports.log({
-        msg: 'E-mail "' + options.mailoptions.subject + '" successfully sent to ' + recipients.join(", ")
-      });
-      if (callback !== undefined) {
-        return callback();
+  // Debugging is turned on
+  if (options.debug || conf.debug) {
+    saveToFile(options.mailoptions.html, options.mailoptions.subject + '.html', function(err) {
+      if (err) {
+        console.log(err);
       }
-    }
-  });
+      else {
+        // Log the success
+        exports.log({msg: 'E-mail "' + options.mailoptions.subject + '" successfully saved to file for debugging.'});
+      }
+      callback(err);
+      return;
+    });
+  }
+  // Debugging is turned off
+  else {
+
+    options.transporterOpt = options.transporterOpt ? options.transporterOpt : conf.email.transporterOpt;
+
+    // Reroute all outgoing e-mails if rerouting is enabled. CC and BCC are disabled.
+    options.mailoptions.to = conf.email.reroute ? conf.email.reroute_address : options.mailoptions.to;
+    options.mailoptions.cc = conf.email.reroute ? null : options.mailoptions.cc;
+    options.mailoptions.bcc = conf.email.reroute ? null : options.mailoptions.bcc;
+
+    // Create reusable transporter object using SMTP transport
+    transporter = nodemailer.createTransport(options.transporterOpt);
+
+    // Send e-mail with defined transport object
+    transporter.sendMail(options.mailoptions, function(error, info){
+      if (error) {
+        // Log the error
+        exports.log({
+          level: 'error',
+          msg: error,
+          meta: {
+            subject: options.mailoptions.subject,
+            to: options.mailoptions.to
+          }
+        });
+      } else {
+        var recipients = [
+          options.mailoptions.to,
+          options.mailoptions.cc
+        ];
+        // Log the success
+        exports.log({
+          msg: 'E-mail "' + options.mailoptions.subject + '" successfully sent to ' + recipients.join(", ")
+        });
+        if (callback !== undefined) {
+          callback();
+        }
+      }
+    });
+
+  }
 };
 
 /**
@@ -235,5 +258,30 @@ exports.kalabalik = function(options, callback) {
     err = (error || response.statusCode !== 200) ? err : null;
 
     callback(err, body);
+  });
+};
+
+/**
+ * Saves html content to a file. Can be used to debug composer
+ * e-mails in order to prevent sending them.
+ * @param  {string}   content - The html content.
+ * @param  {string}   filename - The name of the file.
+ * @param  {saveToFileCallback} callback - A callback to run afterwards.
+ */
+var saveToFile = function(content, filename, callback) {
+
+  var dir = 'debug';
+
+  // Create the debug folder if it doesn't exist.
+  if (!fs.existsSync(dir)){
+    fs.mkdirSync(dir);
+  }
+
+  // Write the html file
+  fs.writeFile(dir + '/' + filename, content, function(err) {
+    if (err) {
+      return console.log(err);
+    }
+    callback(err);
   });
 };
