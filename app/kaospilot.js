@@ -20,8 +20,15 @@ i18n.configure({
   directory: 'locale'
 });
 
-// Default to using file logging if no other Winston transport has been selected.
+/**
+ * Default to using file logging if no other Winston transport has
+ * been selected.
+ */
 if (!conf.winstonTransport.module) {
+  // Create the log folder if it doesn't exist.
+  if (!fs.existsSync('log')){
+    fs.mkdirSync('log');
+  }
   winston.add(winston.transports.File, { filename: 'log/kaospilot.log' });
 } else {
   winston.add(conf.winstonTransport.module, conf.winstonTransport.options);
