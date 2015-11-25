@@ -14,7 +14,9 @@ handlebars.registerHelper('t', function(string, locale) {
   return exports.t(string, locale);
 });
 
-// Configure i18n
+/**
+ * Configure i18n
+ */
 i18n.configure({
   locales: conf.languages,
   directory: 'locale'
