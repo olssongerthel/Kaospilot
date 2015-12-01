@@ -13,7 +13,7 @@ Kaospilot is very lightweight and only provides a couple of things:
 2. Unzip/Unpack and go to the folder
 3. Copy and rename config.default.js: `cp config/config.default.js config.js` and configure config.js.
 4. Install dependencies: `npm install --production`
-5. Add the plugins you want to use (in plugins folder)
+5. Create the ‘plugins’ folder in the root directory of Kaospilot and add the plugins you want to use (in plugins folder).
 6. Run Kaospilot: `node server.js` or `npm start`
 
 Your plugin daemons should now be up and running!
