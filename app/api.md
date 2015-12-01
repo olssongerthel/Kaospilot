@@ -9,6 +9,10 @@ The folder will be automatically created if it doesn&#39;t exist.</p>
 <dt><a href="#log">log(data)</a></dt>
 <dd><p>Generates a log entry.</p>
 </dd>
+<dt><a href="#debug">debug(msg, log)</a></dt>
+<dd><p>Logs a debug message to the console if debugging is enabled in the
+configuration file. Useful for debugging plugins.</p>
+</dd>
 <dt><a href="#handlebars">handlebars(options, callback)</a></dt>
 <dd><p>Generates HTML by supplying the data along with a HBS template to use.</p>
 </dd>
@@ -61,6 +65,18 @@ Generates a log entry.
 | data.meta | <code>Object</code> |  |
 | data.meta.plugin | <code>String</code> | The human readable name of your plugin, i.e the same as exports.label from your plugin. |
 
+<a name="debug"></a>
+### debug(msg, log)
+Logs a debug message to the console if debugging is enabled in the
+configuration file. Useful for debugging plugins.
+
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| msg | <code>String</code> | The message you want to log. |
+| log | <code>Boolean</code> | Whether or not to log the message as a debug message using Kalabalik.log() |
+
 <a name="handlebars"></a>
 ### handlebars(options, callback)
 Generates HTML by supplying the data along with a HBS template to use.
@@ -102,6 +118,7 @@ Requests data from an instance of Kalabalik
 | options.requestUrl | <code>String</code> | The request URL incl. "/" |
 | options.method | <code>String</code> | The HTTP method to use (GET, PUT) etc. |
 | [options.body] | <code>String</code> | The body of the request (for PUT etc.) |
+| options.qs | <code>Object</code> | A object containing query string values. |
 | callback | <code>[requestCallback](#requestCallback)</code> | A callback to run. |
 
 <a name="saveToFile"></a>

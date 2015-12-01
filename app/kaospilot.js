@@ -86,6 +86,29 @@ exports.log = function(data) {
 };
 
 /**
+ * Logs a debug message to the console if debugging is enabled in the
+ * configuration file. Useful for debugging plugins.
+ * @param  {String} msg - The message you want to log.
+ * @param  {Boolean} log - Whether or not to log the message as a
+ * debug message using Kalabalik.log()
+ */
+exports.debug = function(msg, log) {
+  if (conf.debug) {
+    if (log) {
+      exports.log({
+        level: 'debug',
+        msg: msg
+      });
+    }
+    else {
+      console.log(msg);
+    }
+  } else {
+    return;
+  }
+};
+
+/**
  * Callback for Handlebars.
  *
  * @callback templateCallback
