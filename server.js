@@ -39,30 +39,9 @@ loader.load('./plugins/**/plugin.js', function (plugin, filename) {
   }
 });
 
-// Function to handle logging when a cron run is done running.
-var cronRunDone = function (plugin) {
-  return function (err) {
-    var meta = { plugin: plugin.label };
-
-    if (err) {
-      kaospilot.log({
-        level: 'error',
-        msg: err,
-        meta: meta
-      });
-    }
-    else {
-      kaospilot.log({
-        msg: 'Plugin cron run completed.',
-        meta: meta
-      });
-    }
-  };
-};
-
 // Creates a new cron task for each plugin found.
 var initialize = function() {
   for (var i = 0; i < plugins.length; i++) {
-    new CronJob(plugins[i].cron, plugins[i].pilot, cronRunDone(plugins[i]), true);
+    new CronJob(plugins[i].cron, plugins[i].pilot, null, true);
   }
 };
