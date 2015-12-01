@@ -15,7 +15,7 @@ handlebars.registerHelper('t', function(string, locale, plural, count) {
     plural = false;
   }
   if (!count || typeof count != 'number') {
-    plural = false;
+    count = false;
   }
   return exports.t(string, locale, plural, count);
 });
