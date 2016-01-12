@@ -292,18 +292,20 @@ exports.kalabalik = function(options, callback) {
   },
   function (error, response, body) {
 
+    var okResponseCodes = [200, 202];
+
     var err = {};
 
     if (error) {
       err.msg = 'An error occured when trying to contact Kalabalik';
       err.request = error;
     }
-    else if (response.statusCode !== 200) {
+    else if (okResponseCodes.indexOf(response.statusCode) == -1) {
       err.msg = body;
       err.request = error;
     }
 
-    err = (error || response.statusCode !== 200) ? err : null;
+    err = (error || okResponseCodes.indexOf(response.statusCode)  == -1) ? err : null;
 
     callback(err, body);
   });

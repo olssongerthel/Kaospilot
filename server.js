@@ -32,7 +32,7 @@ var run = function() {
       });
     }
   });
-}
+};
 
 // Creates a new cron task for each plugin found.
 var initialize = function() {
@@ -53,7 +53,7 @@ var pluginTest = function(plugin) {
   else {
     return true;
   }
-}
+};
 
 // Single player mode (running a single plugin pilot once).
 if (process.env.run) {
@@ -64,7 +64,7 @@ if (process.env.run) {
   // Load the plugin.
   loader.load('./plugins/' + process.env.run + '/plugin.js', function (plugin, filename) {
     if (!pluginTest(plugin)) {
-      return
+      return;
     }
     // Run the plugin's pilot.
     kaospilot.log({
