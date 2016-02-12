@@ -267,13 +267,19 @@ exports.composer = function(options, callback) {
  * @param  {String} options.requestUrl - The request URL incl. "/"
  * @param  {String} options.method     - The HTTP method to use (GET, PUT) etc.
  * @param  {String} [options.body]     - The body of the request (for PUT etc.)
- * @param  {Object} options.qs         - A object containing query string values.
+ * @param  {Object} [options.qs]       - A object containing query string values.
  * @param  {requestCallback} callback  - A callback to run.
  */
 exports.kalabalik = function(options, callback) {
 
   if (conf.debug) {
-    console.log('Fetching data from Kalabalik at ' + options.requestUrl);
+    var queryParams = [];
+    for (var key in options.qs) {
+      queryParams.push(key + '=' + options.qs[key]);
+    }
+    queryParams = queryParams.join('&');
+    queryParams = queryParams ? '?' + queryParams : '';
+    console.log('Fetching data from Kalabalik at ' + options.requestUrl + queryParams);
   }
 
   // Default to port 80
@@ -295,7 +301,6 @@ exports.kalabalik = function(options, callback) {
   function (error, response, body) {
 
     var okResponseCodes = [200, 202];
-
     var err = {};
 
     if (error) {
