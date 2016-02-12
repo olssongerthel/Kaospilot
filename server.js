@@ -1,5 +1,6 @@
 var fs = require('fs'),
     loader = require('node-glob-loader'),
+    conf = require('./config/config'),
     kaospilot = require('./app/kaospilot'),
     CronJob = require('cron').CronJob;
 
@@ -8,9 +9,19 @@ var run = function() {
     msg: 'Let the Kaos begin!'
   });
 
-  // Load all available plugins.
-  loader.load('./plugins/**/plugin.js', function (plugin, filename) {
-    // Bail if it appears to be a broken or incomplete plugin.
+  // Fetch machine names of enabled plugins and create a pattern for glob-loader.
+  var enabledPlugins = [];
+  for (var plugin in conf.plugins) {
+    if (conf.plugins[plugin].enabled) {
+      enabledPlugins.push(plugin);
+    }
+  }
+  enabledPlugins = enabledPlugins.join('|');
+
+  // Load all enabled plugins.
+  loader.load('./plugins/+(' + enabledPlugins + ')/plugin.js', function (plugin, filename) {
+    // Bail if it appears to be a broken or incomplete plugin
+    // or if the plugin is not enabled.
     if (!pluginTest(plugin)) {
       return;
     }

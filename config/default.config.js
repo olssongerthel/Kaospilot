@@ -1,3 +1,10 @@
+// Enabled plugins
+var plugins = {
+  example_plugin_folder: {
+    enabled: true
+  }
+};
+
 // Kalabalik API URL and credentials.
 var kalabalik = {
   url: '',
@@ -58,6 +65,7 @@ var languages = [
  */
 var debug = false;
 
+exports.plugins = plugins;
 exports.kalabalik = kalabalik;
 exports.email = email;
 exports.winstonTransport = winstonTransport;
