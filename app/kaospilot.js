@@ -272,7 +272,9 @@ exports.composer = function(options, callback) {
  */
 exports.kalabalik = function(options, callback) {
 
-  console.log('Fetching data from Kalabalik at ' + options.requestUrl);
+  if (conf.debug) {
+    console.log('Fetching data from Kalabalik at ' + options.requestUrl);
+  }
 
   // Default to port 80
   conf.kalabalik.port = conf.kalabalik.port ? conf.kalabalik.port : 80;
@@ -306,6 +308,11 @@ exports.kalabalik = function(options, callback) {
     }
 
     err = (error || okResponseCodes.indexOf(response.statusCode)  == -1) ? err : null;
+
+    // Log errors when debugging.
+    if (conf.debug && err) {
+      console.log(err);
+    }
 
     callback(err, body);
   });
