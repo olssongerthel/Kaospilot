@@ -62,3 +62,9 @@ Kaospilot supports translation of strings in plugins, both as a stand-alone help
 Handlebars template implementation looks like this:
 
 `{{t "Order"}}`
+
+## Developing plugins
+
+When developing new plugins, you can run them using the process variable `run`. This makes it possible to run a single plugin once which is convenient for development purposes:
+
+`run=plugin_machine_name node server.js`
