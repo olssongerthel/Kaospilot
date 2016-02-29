@@ -200,7 +200,7 @@ exports.composer = function(options, callback) {
   if (options.debug || conf.debug) {
     saveToFile(options.mailoptions.html, options.mailoptions.subject + '.html', function(err) {
       if (err) {
-        console.log(err);
+        exports.debug(err);
       }
       else {
         // Log the success
@@ -279,7 +279,7 @@ exports.kalabalik = function(options, callback) {
     }
     queryParams = queryParams.join('&');
     queryParams = queryParams ? '?' + queryParams : '';
-    console.log('Fetching data from Kalabalik at ' + options.requestUrl + queryParams);
+    console.log(options.method + ' data from Kalabalik at ' + options.requestUrl + queryParams);
   }
 
   // Default to port 80
@@ -315,8 +315,8 @@ exports.kalabalik = function(options, callback) {
     err = (error || okResponseCodes.indexOf(response.statusCode)  == -1) ? err : null;
 
     // Log errors when debugging.
-    if (conf.debug && err) {
-      console.log(err);
+    if (err) {
+      exports.debug(err);
     }
 
     callback(err, body);
