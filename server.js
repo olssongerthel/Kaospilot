@@ -1,8 +1,27 @@
 var fs = require('fs'),
     loader = require('node-glob-loader'),
+    http = require('http'),
     conf = require('./config/config'),
     kaospilot = require('./app/kaospilot'),
     CronJob = require('cron').CronJob;
+
+var startHttp = function() {
+  // Reqest handler
+  function handleRequest(request, response){
+    var message = function() {
+      var string = '\n';
+      for (var i = 0; i < plugins.length; i++) {
+        string = string + '\n - ' + plugins[i].label;
+      }
+      return string;
+    };
+    response.end('Kaospilot is up and running. Enabled plugins:' + message());
+  }
+  // Create the server
+  var server = http.createServer(handleRequest);
+  // Listen
+  server.listen(conf.port);
+};
 
 var run = function() {
   kaospilot.log({
@@ -66,6 +85,9 @@ var pluginTest = function(plugin) {
   }
 };
 
+// Create a namespace that will hold the plugins.
+var plugins = [];
+
 // Single player mode (running a single plugin pilot once).
 if (process.env.run) {
   kaospilot.log({
@@ -86,7 +108,21 @@ if (process.env.run) {
 }
 // Continue Kaospilot as usual
 else {
-  // Create a namespace that will hold the plugins.
-  var plugins = [];
   run();
+
+  // Start the status page
+  if (conf.port !== false) {
+    startHttp();
+  }
+
+  // Keep Kaospilot alive on IIS Node hosts. Will GET once per minute.
+  if (conf.port !== false && conf.iisnode) {
+    var req = function() {
+      http.get({
+        host: 'localhost',
+        port: conf.port
+      });
+    };
+    new CronJob('0 */1 * * * *', req, null, true);
+  }
 }

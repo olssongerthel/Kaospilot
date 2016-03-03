@@ -65,6 +65,25 @@ var languages = [
  */
 var debug = false;
 
+/**
+ * The port to use for the HTTP page that displays the current status of Kaospilot.
+ * This is optional, but can be useful when hosting on IISNode in order to start
+ * the plugin by visiting its URL or just to confirm that its up and running.
+ * @type {integer/boolean} - The port number to use. Set to false if not available.
+ */
+var port = false;
+
+/**
+ * IIS Node timeout prevention. If Kaospilot is hosted on IIS Node, constant HTTP requests
+ * are needed in order to keep the application running, otherwise IIS will terminate it.
+ * Setting this to true will cause Kaospilot to 'ping' itself regularly via HTTP
+ * thus keeping Kaospilot from being terminated.
+ * @type {boolean} - To enable this mode or not.
+ */
+var iisnode = false;
+
+exports.port = port;
+exports.iisnode = iisnode;
 exports.plugins = plugins;
 exports.kalabalik = kalabalik;
 exports.email = email;
