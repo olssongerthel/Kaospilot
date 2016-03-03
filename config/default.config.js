@@ -78,9 +78,12 @@ var port = false;
  * are needed in order to keep the application running, otherwise IIS will terminate it.
  * Setting this to true will cause Kaospilot to 'ping' itself regularly via HTTP
  * thus keeping Kaospilot from being terminated.
- * @type {boolean} - To enable this mode or not.
  */
-var iisnode = false;
+var iisnode = {
+  enabled: true,
+  host: 'localhost', // The domain name to ping, i.e. the HTTP address of the Kaospilot status page.
+  port: port // Usually 80 or 443. Defaults to the port variable.
+};
 
 exports.port = port;
 exports.iisnode = iisnode;

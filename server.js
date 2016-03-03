@@ -118,11 +118,11 @@ else {
   }
 
   // Keep Kaospilot alive on IIS Node hosts. Will GET once per minute.
-  if (conf.port !== false && conf.iisnode) {
+  if (conf.port !== false && conf.iisnode.enabled) {
     var req = function() {
       http.get({
-        host: 'localhost',
-        port: conf.port
+        host: conf.iisnode.host,
+        port: conf.iisnode.port
       });
     };
     new CronJob('0 */1 * * * *', req, null, true);
