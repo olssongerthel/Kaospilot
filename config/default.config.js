@@ -81,7 +81,7 @@ var port = false;
  */
 var iisnode = {
   enabled: false,
-  host: 'localhost', // The domain name to ping, i.e. the HTTP address of the Kaospilot status page.
+  host: 'localhost', // The host name to ping, without protocol.
   port: port // Usually 80 or 443. Defaults to the port variable.
 };
 
