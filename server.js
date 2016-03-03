@@ -6,6 +6,7 @@ var fs = require('fs'),
     CronJob = require('cron').CronJob;
 
 var startHttp = function() {
+  var startup = new Date();
   // Reqest handler
   function handleRequest(request, response){
     var message = function() {
@@ -13,6 +14,7 @@ var startHttp = function() {
       for (var i = 0; i < plugins.length; i++) {
         string = string + '\n - ' + plugins[i].label;
       }
+      string = string + '\n\n' + 'Since: ' + startup;
       return string;
     };
     response.end('Kaospilot is up and running. Enabled plugins:' + message());
