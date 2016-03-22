@@ -73,20 +73,7 @@ var debug = false;
  */
 var port = false;
 
-/**
- * IIS Node timeout prevention. If Kaospilot is hosted on IIS Node, constant HTTP requests
- * are needed in order to keep the application running, otherwise IIS will terminate it.
- * Setting this to true will cause Kaospilot to 'ping' itself regularly via HTTP
- * thus keeping Kaospilot from being terminated.
- */
-var iisnode = {
-  enabled: false,
-  host: 'localhost', // The host name to ping, without protocol.
-  port: port // Usually 80 or 443. Defaults to the port variable.
-};
-
 exports.port = port;
-exports.iisnode = iisnode;
 exports.plugins = plugins;
 exports.kalabalik = kalabalik;
 exports.email = email;
