@@ -3,7 +3,8 @@ var fs = require('fs'),
     http = require('http'),
     conf = require('./config/config'),
     kaospilot = require('./app/kaospilot'),
-    CronJob = require('cron').CronJob;
+    CronJob = require('cron').CronJob,
+    prettyCron = require('prettycron');
 
 var startHttp = function() {
   var startup = new Date();
@@ -12,7 +13,7 @@ var startHttp = function() {
     var message = function() {
       var string = '\n';
       for (var i = 0; i < plugins.length; i++) {
-        string = string + '\n - ' + plugins[i].label;
+        string = string + '\n - ' + plugins[i].label + ' (Runs: ' + prettyCron.toString(plugins[i].cron) + ')';
       }
       string = string + '\n\n' + 'Since: ' + startup;
       return string;
