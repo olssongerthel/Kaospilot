@@ -61,6 +61,10 @@ var languages = [
 /**
  * Can be used to debug plugins during development. The variable must however
  * be used by the plugins themselves in order to function.
+ *
+ * All API requests to Kalabalik will be logged if enabled.
+ * All e-mails will be written to file (in /debug) instead of being sent.
+ *
  * @type {Boolean}
  */
 var debug = false;
