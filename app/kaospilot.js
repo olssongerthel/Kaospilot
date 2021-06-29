@@ -1,24 +1,24 @@
 var conf = require('../config/config'),
-    i18n = require('i18n'),
-    handlebars = require('handlebars'),
-    juice = require('juice'),
-    fs = require('fs'),
-    nodemailer = require('nodemailer'),
-    request = require('request'),
-    winston = require('winston');
+  i18n = require('i18n'),
+  handlebars = require('handlebars'),
+  juice = require('juice'),
+  fs = require('fs'),
+  nodemailer = require('nodemailer'),
+  request = require('request'),
+  winston = require('winston')
 
 // Register custom handlebars i18n helper.
-handlebars.registerHelper('t', function(string, locale, plural, count) {
+handlebars.registerHelper('t', function (string, locale, plural, count) {
   // Default locale to Swedish if undefined or Swedish.
-  locale = locale || 0;
+  locale = locale || 0
   if (!plural || typeof plural != 'boolean') {
-    plural = false;
+    plural = false
   }
   if (!count || typeof count != 'number') {
-    count = false;
+    count = false
   }
-  return exports.t(string, locale, plural, count);
-});
+  return exports.t(string, locale, plural, count)
+})
 
 /**
  * Configure i18n
@@ -26,7 +26,7 @@ handlebars.registerHelper('t', function(string, locale, plural, count) {
 i18n.configure({
   locales: conf.languages,
   directory: 'locale'
-});
+})
 
 /**
  * Default to using file logging if no other Winston transport has
@@ -34,12 +34,12 @@ i18n.configure({
  */
 if (!conf.winstonTransport.module) {
   // Create the log folder if it doesn't exist.
-  if (!fs.existsSync('log')){
-    fs.mkdirSync('log');
+  if (!fs.existsSync('log')) {
+    fs.mkdirSync('log')
   }
-  winston.add(winston.transports.File, { filename: 'log/kaospilot.log' });
+  winston.add(winston.transports.File, { filename: 'log/kaospilot.log' })
 } else {
-  winston.add(conf.winstonTransport.module, conf.winstonTransport.options);
+  winston.add(conf.winstonTransport.module, conf.winstonTransport.options)
 }
 
 /**
@@ -57,20 +57,23 @@ if (!conf.winstonTransport.module) {
  * plural. Only used in combination with pluralized strings.
  * @return {String} The translated string.
  */
-exports.t = function(string, locale, plural, count) {
+exports.t = function (string, locale, plural, count) {
   if (plural) {
-    return i18n.__n({
-      singular: string,
-      plural: string,
-      locale: conf.languages[locale]
-    }, count);
+    return i18n.__n(
+      {
+        singular: string,
+        plural: string,
+        locale: conf.languages[locale]
+      },
+      count
+    )
   } else {
     return i18n.__({
       phrase: string,
       locale: conf.languages[locale]
-    });
+    })
   }
-};
+}
 
 /**
  * Generates a log entry.
@@ -79,11 +82,11 @@ exports.t = function(string, locale, plural, count) {
  * @param  {String} data.meta.plugin - The human readable name of your plugin,
  * i.e the same as exports.label from your plugin.
  */
-exports.log = function(data) {
-  data.level = data.level ? data.level : 'info';
-  data.meta = data.meta ? data.meta : null;
-  winston.log(data.level, data.msg, data.meta);
-};
+exports.log = function (data) {
+  data.level = data.level ? data.level : 'info'
+  data.meta = data.meta ? data.meta : null
+  winston.log(data.level, data.msg, data.meta)
+}
 
 /**
  * Logs a debug message to the console if debugging is enabled in the
@@ -92,21 +95,20 @@ exports.log = function(data) {
  * @param  {Boolean} log - Whether or not to log the message as a
  * debug message using Kalabalik.log()
  */
-exports.debug = function(msg, log) {
+exports.debug = function (msg, log) {
   if (conf.debug) {
     if (log) {
       exports.log({
         level: 'debug',
         msg: msg
-      });
-    }
-    else {
-      console.log(msg);
+      })
+    } else {
+      console.log(msg)
     }
   } else {
-    return;
+    return
   }
-};
+}
 
 /**
  * Callback for Handlebars.
@@ -127,60 +129,63 @@ exports.debug = function(msg, log) {
  * @param  {Object} options.data - A javascript object containing the data.
  * @param  {templateCallback} callback - A callback to run.
  */
-exports.handlebars = function(options, callback) {
-
-  var templateLocation = 'plugins/' + options.plugin + '/templates/' + options.template + '.hbs';
-  var css = '';
+exports.handlebars = function (options, callback) {
+  var templateLocation = 'plugins/' + options.plugin + '/templates/' + options.template + '.hbs'
+  var css = ''
 
   // Opens a plugin CSS file and returns its content as a string in a callback.
-  var fetchCss = function(callback) {
-    var cssLocation = 'plugins/' + options.plugin + '/css/' + options.css;
-    fs.readFile(cssLocation, function(err, fileContent){
+  var fetchCss = function (callback) {
+    var cssLocation = 'plugins/' + options.plugin + '/css/' + options.css
+    fs.readFile(cssLocation, function (err, fileContent) {
       if (!err) {
-        css = fileContent.toString();
-        callback(css);
+        css = fileContent.toString()
+        callback(css)
       } else {
-        console.log('Something went wrong when attempting to open the css file: ' + err);
-        return;
+        console.log('Something went wrong when attempting to open the css file: ' + err)
+        return
       }
-    });
-  };
+    })
+  }
 
   // Read the template file and use a callback to render
-  fs.readFile(templateLocation, function(err, fileContent){
+  fs.readFile(templateLocation, function (err, fileContent) {
     if (!err) {
-      var source = fileContent.toString();
+      var source = fileContent.toString()
       if (options.css) {
-        fetchCss(function() {
-          renderToString(source, options.data);
-        });
+        fetchCss(function () {
+          renderToString(source, options.data)
+        })
       } else {
-        renderToString(source, options.data);
+        renderToString(source, options.data)
       }
     } else {
-      console.log('Something went wrong when attempting to open the template file: ' + err);
-      return;
+      console.log('Something went wrong when attempting to open the template file: ' + err)
+      return
     }
-  });
+  })
 
   // Render the output by combining the data with the template.
   function renderToString(source, data) {
-    var template = handlebars.compile(source);
-    var compiled = template(data);
+    var template = handlebars.compile(source)
+    var compiled = template(data)
     if (options.css) {
-      juice.juiceResources(compiled, {
-        extraCss: css,
-        applyStyleTags: true
-      }, function(err, html){
-        if (!err) {
-          callback(html);
+      juice.juiceResources(
+        compiled,
+        {
+          extraCss: css,
+          applyStyleTags: true
+        },
+        function (err, html) {
+          if (!err) {
+            callback(html)
+          }
         }
-      });
+      )
     } else {
-      return callback(compiled);
+      return callback(compiled)
     }
   }
-};
+}
 
 /**
  * Sends an e-mail via SMTP.
@@ -194,37 +199,41 @@ exports.handlebars = function(options, callback) {
  * the global debug setting used in the configuration file.
  * @param  {Function} callback - A callback to run after the e-mail is sent.
  */
-exports.composer = function(options, callback) {
-
+exports.composer = function (options, callback) {
   // Debugging is turned on
   if (options.debug || conf.debug) {
-    saveToFile(options.mailoptions.html, options.mailoptions.subject + '.html', function(err) {
+    saveToFile(options.mailoptions.html, options.mailoptions.subject + '.html', function (err) {
       if (err) {
-        exports.debug(err);
-      }
-      else {
+        exports.debug(err)
+      } else {
         // Log the success
-        exports.log({msg: 'E-mail "' + options.mailoptions.subject + '" successfully saved to file for debugging.'});
+        exports.log({
+          msg:
+            'E-mail "' + options.mailoptions.subject + '" successfully saved to file for debugging.'
+        })
       }
-      callback(err);
-      return;
-    });
+      callback(err)
+      return
+    })
   }
   // Debugging is turned off
   else {
-
-    options.transporterOpt = options.transporterOpt ? options.transporterOpt : conf.email.transporterOpt;
+    options.transporterOpt = options.transporterOpt
+      ? options.transporterOpt
+      : conf.email.transporterOpt
 
     // Reroute all outgoing e-mails if rerouting is enabled. CC and BCC are disabled.
-    options.mailoptions.to = conf.email.reroute ? conf.email.reroute_address : options.mailoptions.to;
-    options.mailoptions.cc = conf.email.reroute ? null : options.mailoptions.cc;
-    options.mailoptions.bcc = conf.email.reroute ? null : options.mailoptions.bcc;
+    options.mailoptions.to = conf.email.reroute
+      ? conf.email.reroute_address
+      : options.mailoptions.to
+    options.mailoptions.cc = conf.email.reroute ? null : options.mailoptions.cc
+    options.mailoptions.bcc = conf.email.reroute ? null : options.mailoptions.bcc
 
     // Create reusable transporter object using SMTP transport
-    transporter = nodemailer.createTransport(options.transporterOpt);
+    transporter = nodemailer.createTransport(options.transporterOpt)
 
     // Send e-mail with defined transport object
-    transporter.sendMail(options.mailoptions, function(error, info){
+    transporter.sendMail(options.mailoptions, function (error, info) {
       if (error) {
         // Log the error
         exports.log({
@@ -234,24 +243,24 @@ exports.composer = function(options, callback) {
             subject: options.mailoptions.subject,
             to: options.mailoptions.to
           }
-        });
+        })
       } else {
-        var recipients = [
-          options.mailoptions.to,
-          options.mailoptions.cc
-        ];
+        var recipients = [options.mailoptions.to, options.mailoptions.cc]
         // Log the success
         exports.log({
-          msg: 'E-mail "' + options.mailoptions.subject + '" successfully sent to ' + recipients.join(", ")
-        });
+          msg:
+            'E-mail "' +
+            options.mailoptions.subject +
+            '" successfully sent to ' +
+            recipients.join(', ')
+        })
         if (callback !== undefined) {
-          callback();
+          callback()
         }
       }
-    });
-
+    })
   }
-};
+}
 
 /**
  * Callback for Kalabalik.
@@ -270,58 +279,57 @@ exports.composer = function(options, callback) {
  * @param  {Object} [options.qs]       - A object containing query string values.
  * @param  {requestCallback} callback  - A callback to run.
  */
-exports.kalabalik = function(options, callback) {
-
+exports.kalabalik = function (options, callback) {
   if (conf.debug) {
-    var queryParams = [];
+    var queryParams = []
     for (var key in options.qs) {
-      queryParams.push(key + '=' + options.qs[key]);
+      queryParams.push(key + '=' + options.qs[key])
     }
-    queryParams = queryParams.join('&');
-    queryParams = queryParams ? '?' + queryParams : '';
-    console.log(options.method + ' data from Kalabalik at ' + options.requestUrl + queryParams);
+    queryParams = queryParams.join('&')
+    queryParams = queryParams ? '?' + queryParams : ''
+    console.log(options.method + ' data from Kalabalik at ' + options.requestUrl + queryParams)
   }
 
   // Default to port 80
-  conf.kalabalik.port = conf.kalabalik.port ? conf.kalabalik.port : 80;
+  conf.kalabalik.port = conf.kalabalik.port ? conf.kalabalik.port : 80
 
   // Build the request
-  request({
-    method: options.method,
-    uri: conf.kalabalik.url + ':' + conf.kalabalik.port + options.requestUrl,
-    body: options.body,
-    qs: options.qs || {},
-    json: true,
-    auth: {
-      user: conf.kalabalik.username,
-      pass: conf.kalabalik.password,
-      sendImmediately: false
+  request(
+    {
+      method: options.method,
+      uri: conf.kalabalik.url + ':' + conf.kalabalik.port + options.requestUrl,
+      body: options.body,
+      qs: options.qs || {},
+      json: true,
+      auth: {
+        user: conf.kalabalik.username,
+        pass: conf.kalabalik.password,
+        sendImmediately: false
+      }
+    },
+    function (error, response, body) {
+      var okResponseCodes = [200, 202]
+      var err = {}
+
+      if (error) {
+        err.msg = 'An error occured when trying to contact Kalabalik'
+        err.request = error
+      } else if (okResponseCodes.indexOf(response.statusCode) == -1) {
+        err.msg = body
+        err.request = error
+      }
+
+      err = error || okResponseCodes.indexOf(response.statusCode) == -1 ? err : null
+
+      // Log errors when debugging.
+      if (err) {
+        exports.debug(err)
+      }
+
+      callback(err, body)
     }
-  },
-  function (error, response, body) {
-
-    var okResponseCodes = [200, 202];
-    var err = {};
-
-    if (error) {
-      err.msg = 'An error occured when trying to contact Kalabalik';
-      err.request = error;
-    }
-    else if (okResponseCodes.indexOf(response.statusCode) == -1) {
-      err.msg = body;
-      err.request = error;
-    }
-
-    err = (error || okResponseCodes.indexOf(response.statusCode)  == -1) ? err : null;
-
-    // Log errors when debugging.
-    if (err) {
-      exports.debug(err);
-    }
-
-    callback(err, body);
-  });
-};
+  )
+}
 
 /**
  * Saves html content to a file. Can be used to debug composer
@@ -330,20 +338,19 @@ exports.kalabalik = function(options, callback) {
  * @param  {string}   filename - The name of the file.
  * @param  {saveToFileCallback} callback - A callback to run afterwards.
  */
-var saveToFile = function(content, filename, callback) {
-
-  var dir = 'debug';
+var saveToFile = function (content, filename, callback) {
+  var dir = 'debug'
 
   // Create the debug folder if it doesn't exist.
-  if (!fs.existsSync(dir)){
-    fs.mkdirSync(dir);
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir)
   }
 
   // Write the html file
-  fs.writeFile(dir + '/' + filename, content, function(err) {
+  fs.writeFile(dir + '/' + filename, content, function (err) {
     if (err) {
-      return console.log(err);
+      return console.log(err)
     }
-    callback(err);
-  });
-};
+    callback(err)
+  })
+}

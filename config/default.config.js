@@ -3,7 +3,7 @@ var plugins = {
   example_plugin_folder: {
     enabled: true
   }
-};
+}
 
 // Kalabalik API URL and credentials.
 var kalabalik = {
@@ -17,7 +17,8 @@ var kalabalik = {
 var email = {
   reroute: false, // Set to true to redirect all e-mails sent via Composer.
   reroute_address: '', // E-mail recipient for redirected e-mails.
-  transporterOpt: { // A valid Nodemailer transporter options object
+  transporterOpt: {
+    // A valid Nodemailer transporter options object
     service: '', // I.e. 'gmail'
     auth: {
       user: '',
@@ -48,15 +49,7 @@ var winstonTransport = {
  * @type {Array}  languages
  * @type {String} languages[] - A valid language code (i.e. 'sv' or 'dk').
  */
-var languages = [
-  'sv',
-  'en',
-  'de',
-  'fr',
-  'fi',
-  'no',
-  'da'
-];
+var languages = ['sv', 'en', 'de', 'fr', 'fi', 'no', 'da']
 
 /**
  * Can be used to debug plugins during development. The variable must however
@@ -67,7 +60,7 @@ var languages = [
  *
  * @type {Boolean}
  */
-var debug = false;
+var debug = false
 
 /**
  * The port to use for the HTTP page that displays the current status of Kaospilot.
@@ -75,12 +68,12 @@ var debug = false;
  * the plugin by visiting its URL or just to confirm that its up and running.
  * @type {integer/boolean} - The port number to use. Set to false if not available.
  */
-var port = false;
+var port = false
 
-exports.port = port;
-exports.plugins = plugins;
-exports.kalabalik = kalabalik;
-exports.email = email;
-exports.winstonTransport = winstonTransport;
-exports.languages = languages;
-exports.debug = debug;
+exports.port = port
+exports.plugins = plugins
+exports.kalabalik = kalabalik
+exports.email = email
+exports.winstonTransport = winstonTransport
+exports.languages = languages
+exports.debug = debug
