@@ -18,7 +18,8 @@
     "nodemailer": "^6.6.2",
     "prettycron": "^0.10.0",
     "request": "^2.64.0",
-    "winston": "^1.1.2"
+    "winston": "^1.1.2",
+    "winston-sentry": "^0.2.1"
   },
   "devDependencies": {
     "prettier": "^2.3.2"
